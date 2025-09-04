@@ -1,14 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : StateManager<PlayerMovement.PlayerState>
 {
-    // Start is called before the first frame update
+    //movement varaibles
     public float moveSpeed = 5f;
-    public float dashSpeed = 100f;
+    public float rotationSpeed = 700f;
+
+    //dash movement varaibles
+    public float dashSpeed = 20f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 2f;
+
+    //state Machine stuffs
+    public enum PlayerState
+    {
+        Idle,
+        Walk,
+        Dash
+    }
+
+    private Dictionary<PlayerState, BaseState<PlayerState>> states = new Dictionary<PlayerState, BaseState<PlayerState>>();
+    private BaseState<PlayerState> currentState;
+    public CharacterController CharacterController;
+    void Awake()
+    {
+        CharacterController = GetComponent<CharacterController>();
+        currentState = states[PlayerState.Idle];
+    }
+
+}   
+public class WalkState : BaseState<PlayerState>
+{
+    
+}
+
+public class DashState : BaseState<PlayerState>
+{
+      
+}
+    
+/*
     private CharacterController characterController;
     public Transform playerVisuals;
     Rigidbody rBody;
@@ -19,7 +56,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    public float rotationSpeed = 700f;
     void Update()
     {
         //getting the inputs for later use
@@ -27,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         float verticalMovement = Input.GetAxisRaw("Vertical");
 
         Vector3 moveDirection = new Vector3(horizontalMovement, 0f, verticalMovement);
-        
+
         characterController.Move(moveDirection * moveSpeed * Time.deltaTime);
         if (moveDirection.sqrMagnitude > 0.01f)
         {
@@ -42,3 +78,4 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 }
+*/
